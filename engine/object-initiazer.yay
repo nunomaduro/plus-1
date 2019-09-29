@@ -1,0 +1,25 @@
+$(macro: recursion) {
+    new $(ns() as class)
+    $(optional(between(token('('), layer(), token(')')) as deps))
+    {
+        $(ls(
+            chain(
+                token(T_STRING) as name,
+                token('='),
+                expression() as value,
+                _() as setter
+            ),
+            token(',')
+        ) as fields)
+    }
+} >> {
+    (function () {
+        $object = (new $(class)($(deps)));
+
+        $(fields ... {
+           $object->$(name) = ($(value));
+        })
+
+        return $object;
+    })();
+}

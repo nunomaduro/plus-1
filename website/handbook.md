@@ -90,9 +90,9 @@ can depend from run-time information.
 
 ```php
 class User {
-    public Name $name = new NameValueObject();
+    public Name $name = new Name('Nuno');
 
-    public callable $nameFormatter = (string $name): string => ucwords($name);
+    public callable $nameFormatter = (Name $name) => ucwords($name->toString());
 
     // ..
 }

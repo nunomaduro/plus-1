@@ -4,12 +4,13 @@
 
 As discussed on the [prologue](prologue.html), in **Plus**, we add features to
 PHP that you probably have already saw in other languages. Of course, we compile
-those new features down to `PHP 7.2` that works across all platforms.
+those new features down to PHP that works across all platforms.
 
 Let’s take a look at a simple class-based example:
 
 ```php
-internal class User {
+internal class User
+{
     public readonly string $name;
 
     public __construct(string $name) {
@@ -29,7 +30,8 @@ If you have done PHP before, you probably have used the syntax bellow
 while declaring a class method:
 
 ```php
-class User {
+class User
+{
     // ..
 
     public function getName(): string
@@ -43,7 +45,8 @@ class User {
 With **Plus**, we belive the `function` keyword is relatively useless. So we allow you to do:
 
 ```php
-class User {
+class User
+{
     // ..
 
    public getName(): string
@@ -59,7 +62,8 @@ Even better, you can have one line arrow functions. Keep in mind that the `retur
 in those one-line arrow functions:
 
 ```php
-class User {
+class User
+{
     // ..
 
     public getName(): string => $this->name;
@@ -76,7 +80,8 @@ may be associated with a type. In our example, the `$name` property is a `string
 add the type within the code:
 
 ```php
-class User {
+class User
+{
     public string $name;
 
     // ..
@@ -89,7 +94,8 @@ With **Plus**, the default value of a property may or not be a constant value. A
 can depend from run-time information.
 
 ```php
-class User {
+class User
+{
     public Name $name = new Name('Nuno');
 
     public callable $nameFormatter = (Name $name) => ucwords($name->toString());
@@ -109,7 +115,8 @@ written to once - on initialisation level. Those properties should contain the
 `readonly` modifier:
 
 ```php
-class User {
+class User
+{
     public readonly string $name;
 
     // ..
@@ -126,7 +133,8 @@ can be hard, because technically in PHP **every class is public**. With **Plus**
 keyword can be used to denote that the associated class is internal to the library:
 
 ```php
-internal class User {
+internal class User
+{
     // ..
 }
 ```

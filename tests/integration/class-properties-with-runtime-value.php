@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 declare(plus=1);
 
 class TestClass

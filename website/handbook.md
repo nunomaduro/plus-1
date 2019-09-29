@@ -125,7 +125,7 @@ you to work in a functional way, as unexpected mutation is forbidden.
 ## Object initializer
 
 You can use object initializers to initialize class objects in a declarative manner without explicitly
-invoking the constructor for the class. The compiler processes object initializers by first accessing
+invoking the constructor for the class. **Plus** processes object initializers by first accessing
 the default instance constructor and then processing the properties initializations:
 
 ```php
@@ -136,7 +136,7 @@ $user = new User {
 
 In this example, the object initializer will try to use the `$user->setName('Nuno')` method. If a setter does not exist, **Plus**
 will try to set using the public accessor `$user->name = 'Nuno'`. If the property is declared as `private` within the
-class, object initializers will fail, and an `RuntimeException::class` will be throw.
+class, object initializers will fail, and an `RuntimeException` will be throw.
 
 ## Internal classes
 

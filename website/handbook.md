@@ -158,8 +158,8 @@ $user->answer(Response::Yes);
 
 ## Arrow functions
 
-Short closures, also called arrow functions, are a way of writing shorter functions
-in **Plus**. This notation is useful when passing closures to functions like `array_map`
+Arrow functions, also called short closures, are a way of writing shorter functions
+in **Plus**. This notation is useful when passing callbacks to functions like `array_map`
 or `array_filter`:
 
 ```php
@@ -170,8 +170,8 @@ $names = array_map(($user) => {
 }, $users);
 ```
 
-Keep in mind, short closures / arrow functions lexically captures the meaning of `$this`, and the
-meaning of the entire scope:
+Keep in mind, arrow functions lexically captures the meaning of `$this`, and
+the meaning of the entire scope:
 
 ```php
 $nameGetter = () => $this->name;

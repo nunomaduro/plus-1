@@ -23,7 +23,7 @@ internal class User {
 The syntax should look familiar if you have used PHP before - so now,
 let's walk through what **Plus** has to offer:
 
-## Defining methods without `function` keyword
+## Optional `function` keyword
 
 If you have done PHP before, you probably have used the syntax bellow
 while declaring a class method:
@@ -53,9 +53,7 @@ class User {
 }
 ```
 
-Notice how we dropped `function` keyword altogether and just the function name directly.
-
-## Defining arrow function methods
+## Arrow function methods
 
 Even better, you can have one line arrow functions. Keep in mind that the `return` keyword is hidden
 in those one-line arrow functions:
@@ -71,7 +69,7 @@ class User {
 So in the example above, we are going to return the name of the user. Note that, the
 `string` return type is optional.
 
-## Defining the type of property
+## Typed properties
 
 A property class-specific variable belonging to the class. With **Plus**, each property has
 may be associated with a type. In our example, the `$name` property is a `string`, so let's
@@ -85,7 +83,7 @@ class User {
 }
 ```
 
-## Assign a non-constant value to property
+## Non-constant properties assignment
 
 With **Plus**, the default value of a property may or not be a constant value. And it
 can depend from run-time information.
@@ -104,7 +102,7 @@ Keep in mind that, the `__constructor` must be called to those assignments to ha
 functions like `ReflectionClass::newInstanceWithoutConstructor()` will return a instance with
 those properties containing `null` values.
 
-## Making property immutable
+## Readonly properties
 
 **Plus** has built-in support for public properties that can be read anywhere, but only
 written to once - on initialisation level. Those properties should contain the
@@ -121,7 +119,7 @@ class User {
 Readonly properties must be initialized at their declaration or in the constructor. This allows
 you to work in a functional way, as unexpected mutation is forbidden.
 
-## Making classes internal to your library
+## Internal classes
 
 If you are open source maintainer, refactoring after a stable release of your open source library
 can be hard, because technically in PHP **every class is public**. With **Plus**, the `internal`
@@ -158,7 +156,7 @@ enum Response {
 $user->answer(Response::Yes);
 ```
 
-## Using short closures / arrow functions
+## Arrow functions
 
 Short closures, also called arrow functions, are a way of writing shorter functions
 in **Plus**. This notation is useful when passing closures to functions like `array_map`

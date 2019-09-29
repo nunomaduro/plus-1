@@ -9,15 +9,11 @@ those new features down to PHP that works across all platforms.
 Let’s take a look at a simple class-based example:
 
 ```php
-internal class User
+class User
 {
     public readonly string $name;
 
-    public __construct(string $name) {
-        $this->name = $name;
-    }
-
-    public getName(): string => $this->name;
+    public getName(): string => $name;
 }
 ```
 
@@ -125,6 +121,22 @@ class User
 
 Readonly properties must be initialized at their declaration or in the constructor. This allows
 you to work in a functional way, as unexpected mutation is forbidden.
+
+## Object initializer
+
+You can use object initializers to initialize class objects in a declarative manner without explicitly
+invoking the constructor for the class. The compiler processes object initializers by first accessing
+the default instance constructor and then processing the properties initializations:
+
+```php
+$user = new User {
+    name = 'Nuno',
+};
+```
+
+In this example, the object initializer will try to use the `$user->setName('Nuno')` method. If a setter does not exist, **Plus**
+will try to set using the public accessor `$user->name = 'Nuno'`. If the property is declared as `private` within the
+class, object initializers will fail, and an `RuntimeException::class` will be throw.
 
 ## Internal classes
 

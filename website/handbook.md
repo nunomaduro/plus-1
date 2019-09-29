@@ -2,6 +2,10 @@
 
 > This document is a work in progress, it may still change, perhaps profoundly.
 
+As discussed on the [prologue](prologue.html), in **Plus**, we add features to
+PHP that you probably have already saw in other languages. Of course, we compile
+those new features down to `PHP 7.2` that works across all platforms.
+
 Let’s take a look at a simple class-based example:
 
 ```php
@@ -16,16 +20,18 @@ internal class User {
 }
 ```
 
-Cool right? The syntax should look familiar if you have used PHP before - so now, let's walk through
-what **Plus** has to offer:
+The syntax should look familiar if you have used PHP before - so now,
+let's walk through what **Plus** has to offer:
 
-## Methods signature
+## Defining methods without `function` keyword
 
-If you have done PHP before, you probably have used the following syntax while declaring a class method:
+If you have done PHP before, you probably have used the syntax bellow
+while declaring a class method:
 
 ```php
-class User
-{
+class User {
+    // ..
+
     public function getName(): string
     {
         return $this->name;
@@ -33,74 +39,89 @@ class User
 }
 ```
 
-With **Plus** you can do:
+
+With **Plus**, we belive the `function` keyword is relatively useless. So we allow you to do:
 
 ```php
-class User
-{
-    public getName(): string
+class User {
+    // ..
+
+   public getName(): string
     {
         return $this->name;
     }
 }
 ```
 
-Notice how we dropped `function` keyword altogether and just the function name directly. Even
-better, you can have one line arrow functions:
+Notice how we dropped `function` keyword altogether and just the function name directly.
+
+## Defining arrow function methods
+
+Even better, you can have one line arrow functions. Keep in mind that the `return` keyword is hidden
+in those one-line arrow functions:
 
 ```php
-class User
-{
+class User {
+    // ..
+
     public getName(): string => $this->name;
 }
 ```
 
-Keep in mind that the `return` keyword is hidden in those one-line arrow functions. So in the
-example above, we are going to return the name of the user.
+So in the example above, we are going to return the name of the user. Note that, the
+`string` return type is optional.
 
-## Typed properties
+## Defining the type of property
 
-With **Plus** you don't need PHP 7.4 to start using types in class properties. In our example, if the
-property name is a `string`, you can do:
+A property class-specific variable belonging to the class. With **Plus**, each property has
+may be associated with a type. In our example, the `$name` property is a `string`, so let's
+add the type within the code:
 
 ```php
 class User {
     public string $name;
+
+    // ..
 }
 ```
 
-##
+## Assign a non-constant value to property
 
-With **Plus** you don't need PHP 7.4 to start using types in class properties. In our example, if the
-property name is a `string`, you can do:
+With **Plus**, the default value of a property may or not be a constant value. And it
+can depend from run-time information.
 
 ```php
-class Formatter {
-    public static $format = ($value) => ucfirst($value);
+class User {
+    public Name $name = new NameValueObject();
 
-    public $user = new User();
+    public callable $nameFormatter = (string $name): string => ucwords($name);
+
+    // ..
 }
-
-// Override methods without reflection...
-Formatter::$format = ($value) => lcfirst($value);
-
-// Or just
-Formatter::$format = ($value) => lcfirst($value);
-
 ```
 
-## Readonly properties
+Keep in mind that, the `__constructor` must be called to those assignments to happen. Reflection
+functions like `ReflectionClass::newInstanceWithoutConstructor()` will return a instance with
+those properties containing `null` values.
 
-You can make properties readonly by using the `readonly` keyword. Readonly properties must be
-initialized at their declaration or in the constructor.
+## Making property immutable
+
+**Plus** has built-in support for public properties that can be read anywhere, but only
+written to once - on initialisation level. Those properties should contain the
+`readonly` modifier:
 
 ```php
 class User {
     public readonly string $name;
+
+    // ..
 }
 ```
 
-##  Internal visibility modifier
+Readonly properties must be initialized at their declaration or in the constructor. This allows
+you to work in a functional way, as unexpected mutation is forbidden.
+
+## Making classes internal to your library
 
 If you are open source maintainer, refactoring after a stable release of your open source library
 can be hard, because technically in PHP **every class is public**. With **Plus**, the `internal`
@@ -108,7 +129,13 @@ keyword can be used to denote that the associated class is internal to the libra
 
 ```php
 internal class User {
+    // ..
+}
 ```
+
+With the `internal` keyword, you can clearly define what classes that are not meant to be used
+by others, and at the same time, you can confidently refactor the internals of your library
+without breaking people’s code.
 
 ## Enumerations
 
@@ -131,25 +158,29 @@ enum Response {
 $user->answer(Response::Yes);
 ```
 
-## Short closures
+## Using short closures / arrow functions
 
-Short closures, also called arrow functions, are a way of writing shorter functions in **Plus**. This
-notation is useful when passing closures to functions like array_map or array_filter. Here is
-an example:
+Short closures, also called arrow functions, are a way of writing shorter functions
+in **Plus**. This notation is useful when passing closures to functions like `array_map`
+or `array_filter`:
 
 ```php
 $names = array_map(($user) => $user->name, $users);
+
+$names = array_map(($user) => {
+    return $user->name;
+}, $users);
 ```
 
-## Type Hint Variables
-
-In some cases, type inference in PHP may not work as expected. With **Plus**, you can instruct
-the variable's type to the various static analysis tools. You can specify a variable's type by
-doing `$variable: Type = $value`. Here are some examples:
+Keep in mind, short closures / arrow functions lexically captures the meaning of `$this`, and the
+meaning of the entire scope:
 
 ```php
-$user: User = $collection->first();
-$age: int = $array[1]['age'];
+$nameGetter = () => $this->name;
+
+// or
+$name = $this->name;
+$nameGetter = () => $name;
 ```
 
 ## Reserved names
